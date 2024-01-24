@@ -10,21 +10,23 @@ const Statistics = ({values}) => {
     return <p>No Feedback given</p>
 
   return(
-    <div>
-    <StatisticLine text={'positive'} value={values[0]}/>
-    <StatisticLine text={'neutral'} value={values[1]}/>
-    <StatisticLine text={'negative'} value={values[2]}/>
-    <StatisticLine text={'TOTAL:'} value={values[3].total}/>
-    <StatisticLine text={'AVERAGE:'} value={values[3].average}/>
-    <StatisticLine text={'POSITIVE:'} value={values[3].posPerc}/>
-    </div>
+    <table>
+      <tbody>
+        <StatisticLine text={'positive'} value={values[0]}/>
+        <StatisticLine text={'neutral'} value={values[1]}/>
+        <StatisticLine text={'negative'} value={values[2]}/>
+        <StatisticLine text={'TOTAL:'} value={values[3].total}/>
+        <StatisticLine text={'AVERAGE:'} value={values[3].average}/>
+        <StatisticLine text={'POSITIVE:'} value={values[3].posPerc}/>
+      </tbody>
+    </table>
   )
 }
 
 const StatisticLine = ({text, value}) => {
   if(text === 'POSITIVE:')
-    return <p>{text} {value}%</p>
-  return <p>{text} {value}</p>
+    return <tr><td>{text}</td><td>{value}%</td></tr>
+  return <tr><td>{text}</td><td>{value}</td></tr>
 }
 
 
