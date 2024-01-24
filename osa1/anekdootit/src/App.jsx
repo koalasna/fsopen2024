@@ -13,29 +13,27 @@ const App = () => {
   ]
    
   const [selected, setSelected] = useState(0)
-  const [points, setPoints] = useState(0)
-  
-  if(points === 0) setPoints(Array(anecdotes.length).fill(0))
+  const [points, setPoints] = useState(Array(anecdotes.length).fill(0))
 
   const handleNext = () => setSelected(Math.floor(Math.random()*(anecdotes.length)))
   const handleVote = () => {
     const pointCopy = [...points]
     pointCopy[selected] += 1
-    console.log('copy: ', pointCopy)
     setPoints(pointCopy)
   }
 
   return (
     <>
+      <Header text={'Anecdote of the day'} />
       <p>{anecdotes[selected]}</p>
       <Button text={'vote'} handleClick={handleVote}/>
       <Button text={'next anecdote'} handleClick={handleNext} />
-      
+      <Header text={'Anecdote with most votes'} />
+      <p>{anecdotes[points.indexOf(Math.max(...points))]}</p>
     </>
   )
 }
-
+const Header = ({text}) => <h2>{text}</h2>
 const Button = ({text, handleClick}) => <button onClick={handleClick}>{text}</button>
-
 
 export default App
