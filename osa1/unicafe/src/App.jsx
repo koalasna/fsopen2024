@@ -5,14 +5,30 @@ const Header = ({header}) => <h2>{header}</h2>
 const Button = ({handleClick, text}) => 
   <button onClick={handleClick}>{text}</button>
 
-const Stats = ({feedback, count}) => {
+const Statistics = ({values}) => {
+  if(values[3].total === 0)
+    return <p>No Feedback given</p>
+
   return(
-    <p>{feedback}: {count}</p>
+    <div>
+    <StatisticLine text={'positive'} value={values[0]}/>
+    <StatisticLine text={'neutral'} value={values[1]}/>
+    <StatisticLine text={'negative'} value={values[2]}/>
+    <StatisticLine text={'TOTAL:'} value={values[3].total}/>
+    <StatisticLine text={'AVERAGE:'} value={values[3].average}/>
+    <StatisticLine text={'POSITIVE:'} value={values[3].posPerc}/>
+    </div>
   )
 }
 
-const App = () => {
+const StatisticLine = ({text, value}) => {
+  if(text === 'POSITIVE:')
+    return <p>{text} {value}%</p>
+  return <p>{text} {value}</p>
+}
 
+
+const App = () => {
   const [pos, setPos] = useState(0)
   const [neu, setNeu] = useState(0)
   const [neg, setNeg] = useState(0)
@@ -33,7 +49,6 @@ const App = () => {
       posCount: newPosCount,
       posPerc: newPosCount/newTotal*100
     })
-    console.log('pos: stat ', stat)
   }
 
   const handleNeutral = () => {
@@ -45,7 +60,6 @@ const App = () => {
       average: stat.points/newTotal,
       posPerc: stat.posCount/newTotal*100
     })
-    console.log('neu: stat ', stat)
   }
 
   const handleNeg = () => {
@@ -59,9 +73,9 @@ const App = () => {
       average: newPoints/newTotal,
       posPerc: stat.posCount/newTotal*100
     })
-
-    console.log('neg: stat ', stat)
   }
+  
+  const values = [pos, neu, neg, stat]
 
   return(
     <>
@@ -70,13 +84,7 @@ const App = () => {
     <Button handleClick={handleNeutral} text={'Neutral'} />
     <Button handleClick={handleNeg} text={'Negative'} />
     <Header header={'Statistics'} />
-    <Stats feedback={'positive'} count={pos}/>
-    <Stats feedback={'neutral'} count={neu}/>
-    <Stats feedback={'negative'} count={neg}/>
-    <Stats feedback={'total'} count={stat.total}/>
-    <Stats feedback={'average'} count={stat.average}/>
-    <Stats feedback={'positive'} count={stat.posPerc}/>
- 
+    <Statistics values={values} />
     </>
   )
 }
