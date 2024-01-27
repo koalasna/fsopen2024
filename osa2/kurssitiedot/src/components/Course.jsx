@@ -32,8 +32,6 @@ const Total = ({course}) => {
 
 }
 
-
 const Part = ({name, ex}) => <p>{name} {ex}</p>
-
 
 export default Course;
