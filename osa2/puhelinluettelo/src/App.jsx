@@ -1,4 +1,7 @@
 import { useState } from 'react'
+import Filter from './components/Filter'
+import PersonForm from './components/PersonForm'
+import Contact from './components/Contact'
 
 const App = () => {
   const [persons, setPersons] = useState([
@@ -46,21 +49,14 @@ const App = () => {
   return (
     <div>
       <h2>Phonebook</h2>
-      <div>
-        filter shown with: <input onChange={onChangeFilter} />
-      </div>
+      <Filter onChange={onChangeFilter}/>
       <h2>Add a concat</h2>
-      <form onSubmit={handleSubmit}>
-        <div>
-          name: <input value={newName} onChange={handleOnChange}/>
-        </div>
-        <div>
-          phone number: <input value={newNumber} onChange={handleOnChangeNumber} />
-        </div>
-        <div>
-          <button type="submit">add</button>
-        </div>
-      </form>
+      <PersonForm 
+        handleSubmit={handleSubmit} 
+        newName={newName} 
+        handleOnChange={handleOnChange}
+        newNumber={newNumber}
+        handleOnChangeNumber={handleOnChangeNumber} />
       <h2>Numbers</h2>
       <ul>
         {showAll 
@@ -73,7 +69,4 @@ const App = () => {
   )
 
 }
-
-const Contact = ({name, num}) => <li>{name} - {num}</li>
-
 export default App
