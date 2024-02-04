@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react'
 import Filter from './components/Filter'
 import PersonForm from './components/PersonForm'
 import Contact from './components/Contact'
-import axios from 'axios'
+import contactService from './services/contacts'
 
 const App = () => {
   const [persons, setPersons] = useState([])
@@ -12,11 +12,13 @@ const App = () => {
   const [consToShow, setConsToShow] = useState([])
 
   useEffect(() => {
-    axios
-      .get('http://localhost:3001/persons')
-      .then(response =>
-        setPersons(response.data)
-      )
+    contactService
+      .getAll()
+        .then(initialContacts =>
+          setPersons(initialContacts)
+        )
+        .catch(e => 
+          console.log('Virhe yhteystietojen haussa'))
   }, [])
 
   const handleSubmit = (event) =>{
@@ -26,9 +28,17 @@ const App = () => {
       number: newNumber
     }
 
-    persons.map(p=>p.name).includes(addName.name) 
-    ? alert(`${newName} is already added to phonebook`)
-    : setPersons(persons.concat(addName))
+    if(!(persons.map(p=>p.name).includes(addName.name))){
+      contactService
+        .create(addName)
+          .then(returnedContact =>
+            setPersons(persons.concat(returnedContact)))
+          .catch(e => 
+            console.log('Virhe uutta yhteystietoa lisätessä'))
+    } else {
+      alert(`${newName} is already added to phonebook`)
+    }
+
     setNewName('')
     setNewNumber('')
   }
@@ -48,6 +58,10 @@ const App = () => {
       setShowAll(false)
       setConsToShow(persons.filter(p => p.name.toLowerCase().includes(event.target.value)))
     }
+  }
+
+  const handleDelOf = () => {
+    
   }
 
   return (
