@@ -31,8 +31,8 @@ const App = () => {
     if(!(persons.map(p=>p.name).includes(addName.name))){
       contactService
         .create(addName)
-          .then(returnedContact =>
-            setPersons(persons.concat(returnedContact)))
+          .then(createdContact =>
+            setPersons(persons.concat(createdContact)))
           .catch(e => 
             console.log('Virhe uutta yhteystietoa lisätessä'))
     } else {
@@ -60,8 +60,14 @@ const App = () => {
     }
   }
 
-  const handleDelOf = () => {
-    
+  const handleDelOf = person => {
+    if(window.confirm(`Do you want to remove ${person.name} from contacts?`))
+    contactService
+      .remove(person.id)
+        .then(deletedContact => 
+            setPersons(persons.filter(p => p.id !== deletedContact.id)))
+        .catch(e =>
+          console.log('Virhe poistettaessa yhteystietoa'))
   }
 
   return (
@@ -79,9 +85,9 @@ const App = () => {
       <ul>
         {showAll 
         ? persons.map(p => 
-          <Contact key={p.name} name={p.name} num={p.number} />)
+          <Contact key={p.name} name={p.name} num={p.number} handleDelete={()=>handleDelOf(p)}/>)
         : consToShow.map(p => 
-          <Contact key={p.name} name={p.name} num={p.number} />)}
+          <Contact key={p.name} name={p.name} num={p.number} handleDelete={()=>handleDelOf(p)}/>)}
       </ul>
     </div>
   )

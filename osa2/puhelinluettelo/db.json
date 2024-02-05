@@ -3,42 +3,27 @@
     {
       "name": "Arto Hellas",
       "number": "040-123456",
-      "id": 1
+      "id": "1"
     },
     {
       "name": "Ada Lovelace",
       "number": "39-44-5323523",
-      "id": 2
+      "id": "2"
     },
     {
       "name": "Dan Abramov",
       "number": "12-43-234345",
-      "id": 3
-    },
-    {
-      "name": "Mary Poppendieck",
-      "number": "39-23-6423122",
-      "id": 4
+      "id": "3"
     },
     {
       "name": "Tarja Halonen",
       "number": "12345667",
-      "id": 5
+      "id": "5"
     },
     {
-      "name": "Sauli Niinistö",
-      "number": "100100100010",
-      "id": 6
-    },
-    {
-      "id": "981c",
-      "name": "Sanna Kukkone",
-      "number": "47293"
-    },
-    {
-      "id": "8ac7",
-      "name": "IleRakas",
-      "number": "2434124"
+      "id": "a481",
+      "name": "Sanna Kukkonen",
+      "number": "482384932"
     }
   ]
 }
