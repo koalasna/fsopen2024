@@ -3,6 +3,7 @@ import Filter from './components/Filter'
 import PersonForm from './components/PersonForm'
 import Contact from './components/Contact'
 import contactService from './services/contacts'
+import Notifications from './components/Notifications'
 
 const App = () => {
   const [persons, setPersons] = useState([])
@@ -10,6 +11,7 @@ const App = () => {
   const [newNumber, setNewNumber] = useState('')
   const [showAll, setShowAll] = useState(true)
   const [consToShow, setConsToShow] = useState([])
+  const [notifMsg, setMessage] = useState(null)
 
   useEffect(() => {
     contactService
@@ -35,6 +37,11 @@ const App = () => {
             setPersons(persons.concat(createdContact)))
           .catch(e => 
             console.log('Virhe uutta yhteystietoa lisätessä'))
+
+      setMessage(`${addName.name} added to contacts`)
+      setTimeout(() => {
+        setMessage(null)
+      }, 3000)
     } else if(window.confirm(`${addName.name} is already added to phonebook. Replace the old number with a new one?`)){
       const conToUpdate = persons.find(p => p.name === addName.name)
       contactService
@@ -45,6 +52,11 @@ const App = () => {
                 .concat(updatedContact)))
           .catch(e => 
             console.log('Virhe yhteystietoa muokatessa'))
+
+      setMessage(`${conToUpdate.name}'s phone number changed succesfully`)
+      setTimeout(() => {
+        setMessage(null)
+      }, 3000)
     }
 
     setNewName('')
@@ -69,18 +81,24 @@ const App = () => {
   }
 
   const handleDelOf = person => {
-    if(window.confirm(`Do you want to remove ${person.name} from contacts?`))
-    contactService
-      .remove(person.id)
-        .then(deletedContact => 
+    if(window.confirm(`Do you want to remove ${person.name} from contacts?`)){    
+      contactService
+        .remove(person.id)
+          .then(deletedContact => 
             setPersons(persons.filter(p => p.id !== deletedContact.id)))
-        .catch(e =>
-          console.log('Virhe poistettaessa yhteystietoa'))
+          .catch(e =>
+            console.log('Virhe poistettaessa yhteystietoa'))
+        
+      setMessage(`${person.name} removed from contacts`)
+      setTimeout(() => {
+        setMessage(null)
+      }, 3000)}
   }
 
   return (
     <div>
       <h2>Phonebook</h2>
+      <Notifications message={notifMsg}/>
       <Filter onChange={onChangeFilter}/>
       <h2>Add a concat</h2>
       <PersonForm 
