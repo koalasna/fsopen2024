@@ -35,8 +35,16 @@ const App = () => {
             setPersons(persons.concat(createdContact)))
           .catch(e => 
             console.log('Virhe uutta yhteystietoa lisätessä'))
-    } else {
-      alert(`${newName} is already added to phonebook`)
+    } else if(window.confirm(`${addName.name} is already added to phonebook. Replace the old number with a new one?`)){
+      const conToUpdate = persons.find(p => p.name === addName.name)
+      contactService
+        .update(conToUpdate.id, addName)
+          .then(updatedContact =>
+              setPersons(persons
+                .filter(p => p.name !== conToUpdate.name)
+                .concat(updatedContact)))
+          .catch(e => 
+            console.log('Virhe yhteystietoa muokatessa'))
     }
 
     setNewName('')
@@ -56,7 +64,7 @@ const App = () => {
       setShowAll(true) 
     } else {
       setShowAll(false)
-      setConsToShow(persons.filter(p => p.name.toLowerCase().includes(event.target.value)))
+      setConsToShow(persons.filter(p => p.name.toLowerCase().includes(event.target.value.toLowerCase())))
     }
   }
 
