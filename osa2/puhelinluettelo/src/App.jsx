@@ -35,8 +35,9 @@ const App = () => {
         .create(addName)
           .then(createdContact =>
             setPersons(persons.concat(createdContact)))
-          .catch(e => 
-            console.log('Virhe uutta yhteystietoa lisätessä'))
+          .catch(e => {
+            setMessage(`Error in creating a new contact. (${addName.name})`)
+            console.log('Virhe uutta yhteystietoa lisätessä')})
 
       setMessage(`${addName.name} added to contacts`)
       setTimeout(() => {
@@ -50,8 +51,9 @@ const App = () => {
               setPersons(persons
                 .filter(p => p.name !== conToUpdate.name)
                 .concat(updatedContact)))
-          .catch(e => 
-            console.log('Virhe yhteystietoa muokatessa'))
+          .catch(e => {
+            setMessage(`Error in updating ${addName.name}`)
+            console.log('Virhe yhteystietoa muokatessa')})
 
       setMessage(`${conToUpdate.name}'s phone number changed succesfully`)
       setTimeout(() => {
@@ -86,8 +88,10 @@ const App = () => {
         .remove(person.id)
           .then(deletedContact => 
             setPersons(persons.filter(p => p.id !== deletedContact.id)))
-          .catch(e =>
-            console.log('Virhe poistettaessa yhteystietoa'))
+          .catch(e =>{
+            setMessage(`Error in deleting ${person.name}.`)
+            console.log('Virhe poistettaessa yhteystietoa')
+          })
         
       setMessage(`${person.name} removed from contacts`)
       setTimeout(() => {
