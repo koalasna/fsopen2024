@@ -35,7 +35,7 @@ const App = () => {
     } else if(1 < toShow.length && toShow.length <= 10) { // 1-10 vaihtoehtoa kerrallaan
       return(
         <ol>
-          {toShow.map(c => <CountryLi key={c} name={c} />)}
+          {toShow.map(c => <CountryLi key={c} name={c} handleClick={handleClick} />)}
         </ol>
       )
     } else if(toShow.length === 1){   // kun vain yksi maa näytettävänä
@@ -49,6 +49,8 @@ const App = () => {
       <p>Too many countries to show. Keep typing!</p>
     )
   }
+
+const handleClick = (name) => setFilter(name.toLowerCase())
 
   return (
     <>
