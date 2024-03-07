@@ -12,8 +12,10 @@ const App = () => {
   const [showAll, setShowAll] = useState(true)
   const [consToShow, setConsToShow] = useState([])
   const [notifMsg, setMessage] = useState(null)
+  const [reload, setReload] = useState(null)
 
   useEffect(() => {
+    console.log('using effect')
     contactService
       .getAll()
         .then(initialContacts =>
@@ -21,7 +23,7 @@ const App = () => {
         )
         .catch(e => 
           console.log('Virhe yhteystietojen haussa'))
-  }, [])
+  }, [reload])  
 
   const handleSubmit = (event) =>{
     event.preventDefault()
@@ -33,8 +35,11 @@ const App = () => {
     if(!(persons.map(p=>p.name).includes(addName.name))){
       contactService
         .create(addName)
-          .then(createdContact =>
-            setPersons(persons.concat(createdContact)))
+          .then(createdContact => {
+              setPersons(persons.concat(createdContact))
+              console.log('new contact', createdContact)
+              console.log('persons after new contact: ', persons)
+            })
           .catch(e => {
             setMessage(`Error in creating a new contact. (${addName.name})`)
             console.log('Virhe uutta yhteystietoa lisätessä')})
@@ -86,8 +91,10 @@ const App = () => {
     if(window.confirm(`Do you want to remove ${person.name} from contacts?`)){    
       contactService
         .remove(person.id)
-          .then(deletedContact => 
-            setPersons(persons.filter(p => p.id !== deletedContact.id)))
+          .then(deletedContact => {
+            setPersons(persons.filter(p => p.id !== deletedContact.id))
+            setReload(person.id)
+          })
           .catch(e =>{
             setMessage(`Error in deleting ${person.name}.`)
             console.log('Virhe poistettaessa yhteystietoa')
