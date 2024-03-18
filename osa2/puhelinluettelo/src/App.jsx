@@ -35,14 +35,12 @@ const App = () => {
     if(!(persons.map(p=>p.name).includes(addName.name))){
       contactService
         .create(addName)
-          .then(createdContact => {
+          .then(createdContact => 
               setPersons(persons.concat(createdContact))
-              console.log('new contact', createdContact)
-              console.log('persons after new contact: ', persons)
-            })
-          .catch(e => {
-            setMessage(`Error in creating a new contact. (${addName.name})`)
-            console.log('Virhe uutta yhteystietoa lisätessä')})
+            )
+          .catch(e => 
+            setMessage(`Error: ${e.response.data.error}`)
+          )
 
       setMessage(`${addName.name} added to contacts`)
       setTimeout(() => {
@@ -56,9 +54,8 @@ const App = () => {
               setPersons(persons
                 .filter(p => p.name !== conToUpdate.name)
                 .concat(updatedContact)))
-          .catch(e => {
-            setMessage(`Error in updating ${addName.name}`)
-            console.log('Virhe yhteystietoa muokatessa')})
+          .catch(e => 
+            setMessage(`Error: ${e.response.data.error}`))
 
       setMessage(`${conToUpdate.name}'s phone number changed succesfully`)
       setTimeout(() => {
